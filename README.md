@@ -1,5 +1,7 @@
 # OpenAI Fine-Tunes Simple UI
 
+![image](public/screenshot.jfif)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 This is a simple, minimal UI for the [OpenAI fine-tunes API.](https://platform.openai.com/docs/api-reference/fine-tunes)
