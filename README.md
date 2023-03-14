@@ -4,7 +4,7 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-This is a simple, minimal UI for the [OpenAI fine-tunes API.](https://platform.openai.com/docs/api-reference/fine-tunes)
+This is a simple, minimal UI for the [OpenAI fine-tunes API.](https://platform.openai.com/docs/api-reference/fine-tunes). You can list, delete, and even create models.
 
 You should run the app locally - you'll need your API key for this and entering it onto a hosted site isn't secure.
 
