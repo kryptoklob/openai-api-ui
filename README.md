@@ -13,6 +13,7 @@ Make sure you've [set up billing](https://platform.openai.com/account/billing/ov
 ## Functionality
  - [x] list fine-tuned models
  - [x] view events of each fine-tuned model
+ - [ ] auto refresh models & statuses & events
  - [ ] create a new fine-tuned model
  - [x] delete a fine-tuned model
 
