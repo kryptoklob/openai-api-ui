@@ -10,7 +10,17 @@ const Container = styled.div`
   padding: 20px;
 `;
 
+const InputContainer = styled.div`
+  border: 1px solid #ced4da;
+  margin: 0 auto;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  padding: 20px;
+`;
+
 const Form = styled.form`
+  justify-content: center;
   display: flex;
   margin-bottom: 20px;
 `;
@@ -21,13 +31,23 @@ const Label = styled.label`
   align-self: center;
 `;
 
+const Select = styled.select`
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  background-color: #f8f9fa;
+  color: #343a40;
+  padding: 10px;
+  margin: 10px;
+  font-size: 16px;
+`;
+
 const Input = styled.input`
   border: 1px solid #ced4da;
   border-radius: 4px;
   background-color: #f8f9fa;
   color: #343a40;
   padding: 10px;
-  margin-right: 10px;
+  margin: 10px;
   font-size: 16px;
 `;
 
@@ -126,5 +146,7 @@ export {
   EventDate,
   EventList,
   EventDescription,
-  EventItem
+  EventItem,
+  InputContainer,
+  Select
 }

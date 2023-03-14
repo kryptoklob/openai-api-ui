@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import {
   Container,
   Form,
   Label,
   Input,
+  InputContainer,
   Button,
   ModelList,
   ModelCard,
@@ -14,11 +15,15 @@ import {
   EventList,
   EventDescription,
   EventItem,
+  Select
 } from './components';
 
 function App() {
   const [apiKey, setApiKey] = useState('');
   const [models, setModels] = useState([]);
+  const [selectedModel, setSelectedModel] = useState('');
+  const [dataFile, setDataFile] = useState(null);
+  const fileInputRef = useRef(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -66,17 +71,81 @@ function App() {
     }
   };
 
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    setDataFile(file);
+  };
+
+  const handleCreateModel = async () => {
+    const formData = new FormData();
+    formData.append('file', dataFile);
+    formData.append('purpose', 'fine-tune');
+    try {
+      const fileUploadResponse = await axios.post('https://api.openai.com/v1/files', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${apiKey}`,
+        },
+      });
+
+      const fileId = fileUploadResponse.data.id
+
+      const createData = {
+        training_file: fileId,
+        model: selectedModel
+      }
+
+      const response = await axios.post('https://api.openai.com/v1/fine-tunes', createData, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`,
+        },
+      });
+
+      const newModel = response.data;
+      setModels((prevModels) => [newModel, ...prevModels]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <Container>
-      <Form onSubmit={handleSubmit}>
-        <Label>OpenAI API Key</Label>
-        <Input
-          type="text"
-          value={apiKey}
-          onChange={(e) => setApiKey(e.target.value)}
-        />
-        <Button type="submit">Submit</Button>
-      </Form>
+        <Form onSubmit={handleSubmit}>
+        <InputContainer>
+        <h4>Settings</h4>
+          <Input
+            type="text"
+            placeholder="Enter your OpenAI API key"
+            value={apiKey}
+            onChange={(e) => setApiKey(e.target.value)}
+          />
+          <Button type="submit">Get Models</Button>
+          </InputContainer>
+          <InputContainer>
+          <h4>Create New Fine-Tune</h4>
+          <Select
+            value={selectedModel}
+            onChange={(e) => setSelectedModel(e.target.value)}
+          >
+            <option value="">Select a base model</option>
+            <option value="davinci">Davinci</option>
+            <option value="curie">Curie</option>
+            <option value="babbage">Babbage</option>
+            <option value="ada">Ada</option>
+          </Select>
+          <Input
+            type="file"
+            accept=".jsonl"
+            ref={fileInputRef}
+            onChange={handleFileUpload}
+          />
+          <Button type="button" onClick={handleCreateModel} disabled={!selectedModel || !dataFile}>
+            Create Model
+          </Button>
+          </InputContainer>
+          
+        </Form>
       <ModelList>
         {models.map((model) => (
           <ModelCard key={model.id}>
@@ -113,4 +182,4 @@ function App() {
   );
 }
 
-export default App
+export default App;
